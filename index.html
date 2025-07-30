@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gaming Wishlist</title>
+    <meta name="description" content="Manage and prioritize your in-game characters and weapons" />
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+            
+            <div>
+                <h1>Gaming Wishlist</h1>
+                <p class="text-muted-foreground">Organize and prioritize your favorite characters and weapons</p>
+            </div>
+            <button class="btn-primary" id="addButton">Add Item</button>
+        </div>
+
+        <!-- Filter Tabs -->
+        <div style="margin-bottom: 1.5rem;">
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                <button class="btn-filter active" data-filter="all">All Items</button>
+                <button class="btn-filter" data-filter="character-5">5★ Characters</button>
+                <button class="btn-filter" data-filter="character-4">4★ Characters</button>
+                <button class="btn-filter" data-filter="weapon-5">5★ Weapons</button>
+                <button class="btn-filter" data-filter="weapon-4">4★ Weapons</button>
+            </div>
+        </div>
+
+        <!-- Wishlist Items -->
+        <div class="wishlist-container" id="wishlistContainer">
+            <!-- Los items se cargarán con JavaScript -->
+        </div>
+
+        <!-- Add Item Modal -->
+        <div class="modal" id="addModal">
+            <div class="modal-content">
+                <h2>Add New Item</h2>
+                <form id="addForm">
+                    <input type="text" name="name" placeholder="Name" required />
+                    <select name="type" required>
+                        <option value="">Select Type</option>
+                        <option value="character">Character</option>
+                        <option value="weapon">Weapon</option>
+                    </select>
+                    <select name="rarity" required>
+                        <option value="">Select Rarity</option>
+                        <option value="5">5 Star</option>
+                        <option value="4">4 Star</option>
+                    </select>
+                    <input type="url" name="imageUrl" placeholder="Image URL (optional)" />
+                    <textarea name="notes" placeholder="Notes (optional)"></textarea>
+                    <div class="modal-buttons">
+                        <button type="submit" class="btn-primary">Add Item</button>
+                        <button type="button" class="btn-cancel" id="cancelButton">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
