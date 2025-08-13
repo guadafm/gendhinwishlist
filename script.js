@@ -1,36 +1,45 @@
-// Datos de ejemplo
-let wishlistItems = [
-  {
-    id: "1",
-    name: "Hu Tao",
-    type: "character",
-    rarity: 5,
-    imageUrl: "https://i.pinimg.com/736x/d5/0b/0d/d50b0da989d60aa7b9a7a9c6ca308365.jpg",
-    notes: "77th-Generation Director of the Wangsheng Funeral Parlor",
-    obtained: false,
-    priority: 1,
-  },
-  {
-    id: "2",
-    name: "Staff of Homa",
-    type: "weapon",
-    rarity: 5,
-    imageUrl: "https://i.pinimg.com/736x/12/a8/d4/12a8d4d31d3bffcab1a48887b4c5666d.jpg",
-    notes: "Hu Tao's signature weapon",
-    obtained: false,
-    priority: 2,
-  },
-  {
-    id: "3",
-    name: "Bennett",
-    type: "character",
-    rarity: 4,
-    imageUrl: "https://i.pinimg.com/1200x/3e/aa/9d/3eaa9d90e2e50775039f7ef0b7db6813.jpg",
-    notes: "Leader of Benny's Adventure Team",
-    obtained: true,
-    priority: 3,
+function loadFromLocalStorage() {
+  const saved = localStorage.getItem('wishlistItems');
+  if (saved) {
+    wishlistItems = JSON.parse(saved); // carga los datos del usuario
+    console.log('Data loaded from localStorage');
+  } else {
+    // Solo si no hay datos guardados, usamos los ejemplos actuales
+    wishlistItems = wishlistItems.length ? wishlistItems : [
+      {
+        id: "1",
+        name: "Hu Tao",
+        type: "character",
+        rarity: 5,
+        imageUrl: "https://i.pinimg.com/736x/d5/0b/0d/d50b0da989d60aa7b9a7a9c6ca308365.jpg",
+        notes: "77th-Generation Director of the Wangsheng Funeral Parlor",
+        obtained: false,
+        priority: 1
+      },
+      {
+        id: "2",
+        name: "Staff of Homa",
+        type: "weapon",
+        rarity: 5,
+        imageUrl: "https://i.pinimg.com/736x/12/a8/d4/12a8d4d31d3bffcab1a48887b4c5666d.jpg",
+        notes: "Hu Tao's signature weapon",
+        obtained: false,
+        priority: 2
+      },
+      {
+        id: "3",
+        name: "Bennett",
+        type: "character",
+        rarity: 4,
+        imageUrl: "https://i.pinimg.com/1200x/3e/aa/9d/3eaa9d90e2e50775039f7ef0b7db6813.jpg",
+        notes: "Leader of Benny's Adventure Team",
+        obtained: true,
+        priority: 3
+      }
+    ];
+    saveToLocalStorage(); // guardamos los ejemplos para la próxima
   }
-];
+}
 
 let currentFilter = 'all';
 let draggedElement = null;
@@ -205,7 +214,7 @@ function createWishlistItemElement(item) {
                  onchange="toggleObtained('${item.id}', this.checked)" />
           Obtained
         </label>
-        <button class="btn-delete" onclick="deleteItem('${item.id}')" title="Delete item">🗑️</button>
+        <button class="btn-delete" onclick="deleteItem('${item.id}')" title="Delete item">⌫</button>
       </div>
     </div>
   `;
