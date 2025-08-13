@@ -26,7 +26,7 @@ function loadDefaultData() {
   wishlistItems = [
     {
       id: "1",
-      name: "Hu Tao", // Aquí puedes cambiar por tus nuevos ejemplos
+      name: "Hu Tao",
       type: "character",
       rarity: 5,
       imageUrl: "https://i.pinimg.com/736x/d5/0b/0d/d50b0da989d60aa7b9a7a9c6ca308365.jpg",
@@ -36,7 +36,7 @@ function loadDefaultData() {
     },
     {
       id: "2",
-      name: "Staff of Homa", // Cambia por tus nuevos datos
+      name: "Staff of Homa",
       type: "weapon",
       rarity: 5,
       imageUrl: "https://i.pinimg.com/736x/12/a8/d4/12a8d4d31d3bffcab1a48887b4c5666d.jpg",
@@ -46,7 +46,7 @@ function loadDefaultData() {
     },
     {
       id: "3",
-      name: "Bennett", // Y aquí también
+      name: "Bennett",
       type: "character",
       rarity: 4,
       imageUrl: "https://i.pinimg.com/1200x/3e/aa/9d/3eaa9d90e2e50775039f7ef0b7db6813.jpg",
@@ -78,10 +78,52 @@ function initializeApp() {
   renderWishlist();
   setupEventListeners();
   setupDragAndDrop();
+  setupFileInput(); // NUEVA FUNCIÓN
   console.log('App initialized successfully');
 }
 
-// Configurar event listeners - CORREGIDO
+// NUEVA FUNCIÓN: Configurar input de archivos
+function setupFileInput() {
+  const fileInput = document.getElementById('imageFile');
+  const fileLabel = document.querySelector('.file-input-label');
+  const filePreview = document.getElementById('filePreview');
+  const previewImage = document.getElementById('previewImage');
+  const fileName = document.getElementById('fileName');
+
+  if (fileInput) {
+    fileInput.addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        // Validar que sea una imagen
+        if (!file.type.startsWith('image/')) {
+          alert('Please select a valid image file (JPG, PNG, SVG, etc.)');
+          fileInput.value = '';
+          return;
+        }
+
+        // Validar tamaño (máximo 5MB)
+        if (file.size > 5 * 1024 * 1024) {
+          alert('Image size should be less than 5MB');
+          fileInput.value = '';
+          return;
+        }
+
+        // Leer el archivo como Data URL
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          previewImage.src = e.target.result;
+          fileName.textContent = file.name;
+          filePreview.style.display = 'block';
+          fileLabel.classList.add('has-file');
+          fileLabel.innerHTML = '<span>📷 Change Image</span>';
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+  }
+}
+
+// Configurar event listeners - ACTUALIZADO
 function setupEventListeners() {
   // Filtros - usando data-filter attributes
   document.querySelectorAll('.btn-filter').forEach(btn => {
@@ -97,7 +139,7 @@ function setupEventListeners() {
     });
   });
 
-  // Botón agregar item - CORREGIDO con ID específico
+  // Botón agregar item
   const addButton = document.getElementById('addButton');
   if (addButton) {
     addButton.addEventListener('click', function() {
@@ -105,17 +147,17 @@ function setupEventListeners() {
     });
   }
 
-  // Modal - CORREGIDO
+  // Modal
   setupModalEvents();
 }
 
-// Modal functionality - CORREGIDO
+// Modal functionality - ACTUALIZADO
 function setupModalEvents() {
   const modal = document.getElementById('addModal');
   const form = document.getElementById('addForm');
   const cancelBtn = document.getElementById('cancelButton');
   
-  // Botón cancelar - usando ID específico
+  // Botón cancelar
   if (cancelBtn) {
     cancelBtn.addEventListener('click', hideAddModal);
   }
@@ -129,17 +171,20 @@ function setupModalEvents() {
     });
   }
   
-  // Manejar envío del formulario - CORREGIDO con validación
+  // Manejar envío del formulario - ACTUALIZADO
   if (form) {
     form.addEventListener('submit', function(e) {
       e.preventDefault();
       
       const formData = new FormData(form);
+      const fileInput = document.getElementById('imageFile');
+      const previewImage = document.getElementById('previewImage');
+      
       const itemData = {
         name: formData.get('name').trim(),
         type: formData.get('type'),
         rarity: parseInt(formData.get('rarity')),
-        imageUrl: formData.get('imageUrl').trim(),
+        imageUrl: fileInput.files[0] ? previewImage.src : '', // USAR DATA URL SI HAY ARCHIVO
         notes: formData.get('notes').trim()
       };
       
@@ -147,7 +192,7 @@ function setupModalEvents() {
       if (itemData.name && itemData.type && itemData.rarity) {
         addItem(itemData);
         hideAddModal();
-        form.reset();
+        resetForm(); // NUEVA FUNCIÓN PARA LIMPIAR TODO
       } else {
         alert('Please fill in all required fields (Name, Type, Rarity)');
       }
@@ -155,7 +200,23 @@ function setupModalEvents() {
   }
 }
 
-// Renderizar lista de wishlist - MEJORADO
+// NUEVA FUNCIÓN: Resetear formulario completamente
+function resetForm() {
+  const form = document.getElementById('addForm');
+  const fileInput = document.getElementById('imageFile');
+  const fileLabel = document.querySelector('.file-input-label');
+  const filePreview = document.getElementById('filePreview');
+  
+  form.reset();
+  if (fileInput) fileInput.value = '';
+  if (filePreview) filePreview.style.display = 'none';
+  if (fileLabel) {
+    fileLabel.classList.remove('has-file');
+    fileLabel.innerHTML = '<span>📷 Choose Image (JPG, PNG, SVG...)</span>';
+  }
+}
+
+// Renderizar lista de wishlist - IGUAL A TU ORIGINAL
 function renderWishlist() {
   const container = document.getElementById('wishlistContainer');
   const filteredItems = getFilteredItems();
@@ -245,7 +306,7 @@ function createWishlistItemElement(item) {
   return div;
 }
 
-// Funciones de manipulación de datos - CORREGIDAS
+// Resto de tus funciones originales...
 function toggleObtained(id, obtained) {
   const item = wishlistItems.find(item => item.id === id);
   if (item) {
@@ -283,7 +344,7 @@ function addItem(itemData) {
   saveToLocalStorage();
 }
 
-// Drag and Drop functionality - MEJORADO
+// Drag and Drop functionality - IGUAL A TU ORIGINAL
 function setupDragAndDrop() {
   document.addEventListener('dragstart', handleDragStart);
   document.addEventListener('dragend', handleDragEnd);
@@ -343,7 +404,7 @@ function reorderItems(draggedId, targetId) {
   renderWishlist();
 }
 
-// Modal functions - CORREGIDAS
+// Modal functions
 function showAddModal() {
   const modal = document.getElementById('addModal');
   if (modal) {
@@ -363,49 +424,6 @@ function hideAddModal() {
   }
 }
 
-// Persistencia local - MEJORADA
-function saveToLocalStorage() {
-  try {
-    localStorage.setItem('wishlistItems', JSON.stringify(wishlistItems));
-    console.log('Data saved to localStorage');
-  } catch (error) {
-    console.error('Error saving to localStorage:', error);
-  }
-}
-
-function loadFromLocalStorage() {
-  try {
-    const saved = localStorage.getItem('wishlistItems');
-    if (saved) {
-      const parsedItems = JSON.parse(saved);
-      if (Array.isArray(parsedItems) && parsedItems.length > 0) {
-        wishlistItems = parsedItems;
-        console.log('Data loaded from localStorage');
-      }
-    }
-  } catch (error) {
-    console.error('Error loading from localStorage:', error);
-  }
-}
-
-// Auto-guardar cambios - SIMPLIFICADO
-function autoSave() {
-  const originalRender = renderWishlist;
-  renderWishlist = function() {
-    originalRender();
-    saveToLocalStorage();
-  };
-}
-
-// Inicializar auto-save
-autoSave();
-
-// Cerrar modal con tecla Escape
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') {
-    hideAddModal();
-  }
-});
 
 // Función útil para agregar personajes desde consola
 function addSampleCharacter(name, type = 'character', rarity = 5, notes = '') {

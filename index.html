@@ -53,7 +53,19 @@
                         <option value="5">5 Star</option>
                         <option value="4">4 Star</option>
                     </select>
-                    <input type="url" name="imageUrl" placeholder="Image URL (optional)" />
+                    
+                    <!-- NUEVO: Input para archivos de imagen -->
+                    <div class="file-input-container">
+                        <label for="imageFile" class="file-input-label">
+                            <span>📷 Choose Image (JPG, PNG, SVG...)</span>
+                        </label>
+                        <input type="file" id="imageFile" name="imageFile" class="file-input" accept="image/*" />
+                        <div id="filePreview" class="file-preview-container" style="display: none;">
+                            <img id="previewImage" class="file-preview" />
+                            <div id="fileName" class="file-name"></div>
+                        </div>
+                    </div>
+                    
                     <textarea name="notes" placeholder="Notes (optional)"></textarea>
                     <div class="modal-buttons">
                         <button type="submit" class="btn-primary">Add Item</button>
@@ -64,5 +76,4 @@
         </div>
     </div>
 </body>
-
 </html>

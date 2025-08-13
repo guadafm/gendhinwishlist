@@ -1,4 +1,4 @@
-/* Variables de colores */
+/* Variables de colores - IGUALES A TU ORIGINAL */
 :root {
   --background: #F6F5F2;
   --foreground: #09090b;
@@ -285,6 +285,8 @@ body {
   width: 100%;
   max-width: 500px;
   margin: 1rem;
+  max-height: 90vh; /* AGREGADO: altura máxima para PC */
+  overflow-y: auto; /* AGREGADO: scroll si es necesario */
   box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1);
   animation: slideIn 0.2s ease-out;
 }
@@ -305,7 +307,72 @@ body {
   gap: 1rem;
 }
 
-.modal input,
+/* NUEVOS ESTILOS PARA EL INPUT DE ARCHIVO - PC */
+.file-input-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.file-input-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border: 2px dashed var(--border);
+  border-radius: 0.375rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: var(--muted);
+  color: var(--foreground);
+  font-size: 0.875rem;
+  min-height: 50px;
+}
+
+.file-input-label:hover {
+  border-color: var(--primary);
+  background: var(--secondary);
+}
+
+.file-input-label.has-file {
+  border-style: solid;
+  border-color: var(--primary);
+  background: var(--secondary);
+}
+
+.file-input {
+  display: none;
+}
+
+.file-preview-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 0.375rem;
+  background: var(--muted);
+}
+
+.file-preview {
+  width: 80px;
+  height: 80px;
+  border-radius: 0.375rem;
+  object-fit: cover;
+  border: 1px solid var(--border);
+}
+
+.file-name {
+  font-size: 0.75rem;
+  color: var(--primary);
+  text-align: center;
+  font-weight: 500;
+}
+
+.modal input:not(.file-input),
 .modal select,
 .modal textarea {
   padding: 0.75rem;
@@ -407,6 +474,12 @@ body {
   
   .modal-buttons {
     flex-direction: column;
+  }
+  
+  /* Ajustes para input de archivo en móvil */
+  .file-preview {
+    width: 60px;
+    height: 60px;
   }
 }
 
